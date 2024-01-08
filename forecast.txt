@@ -1,0 +1,26 @@
+import requests
+
+# Enter your OpenWeatherMap API key here
+api_key = '0a1078cf2ba738802e195fc8d0336b79'
+
+def get_weather(city_name, api_key):
+    base_url = f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={api_key}'
+    response = requests.get(base_url)
+    data = response.json()
+
+    if response.status_code == 200:
+        main_data = data['main']
+        weather_data = data['weather'][0]
+
+        temperature = main_data['temp'] - 273.15  # Convert to Celsius
+        description = weather_data['description']
+
+        print(f'Weath in {city_name}:')
+        print(f'Temperature: {temperature:.2f}°C')
+        print(f'Description: {description}')
+    else:
+        print('Failed to fetch weather data.')
+
+if __name__ == "__main__":
+    city_name = input("Enter a city name: ")
+    get_weather(city_name, api_key)
